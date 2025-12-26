@@ -1,12 +1,14 @@
 <script>
 import DilationButton from "./DilationButton";
 import DilationUpgradeButton from "./DilationUpgradeButton";
+import HoldableButton from "@/components/HoldableButton";
 
 export default {
   name: "TimeDilationTab",
   components: {
     DilationButton,
-    DilationUpgradeButton
+    DilationUpgradeButton,
+    HoldableButton
   },
   data() {
     return {
@@ -87,6 +89,23 @@ export default {
       upgradeRows.push([this.ttGenerator]);
       return upgradeRows;
     },
+    allRebuyablesUpgradeOrder() {
+      if(this.hasPelleDilationUpgrades) {
+        return [
+          DilationUpgrade.dtGainPelle.id,
+          DilationUpgrade.dtGain.id,
+          DilationUpgrade.galaxyMultiplier.id,
+          DilationUpgrade.galaxyThreshold.id,
+          DilationUpgrade.tickspeedPower.id,
+        ];
+      } else {
+        return [
+          DilationUpgrade.tachyonGain.id,
+          DilationUpgrade.dtGain.id,
+          DilationUpgrade.galaxyThreshold.id
+        ];
+      }
+    },
   },
   methods: {
     update() {
@@ -123,6 +142,11 @@ export default {
 
       this.isEndgameUnlocked = PlayerProgress.endgameUnlocked();
       this.scaleStart = DilationUpgradeScaling.PRIMARY_SCALING;
+    },
+    buyAllRebuyables() {
+      for(const id of this.allRebuyablesUpgradeOrder) {
+        buyDilationUpgrade(id, 100);
+      }
     }
   }
 };
@@ -172,6 +196,14 @@ export default {
     <span v-if="isEndgameUnlocked">
       Past {{ format(scaleStart, 2, 1) }} Dilated Time, all rebuyable Dilation Upgrades will scale faster.
     </span>
+    <HoldableButton
+      v-if="isEndgameUnlocked || isRealityUnlocked" 
+      className="maxButton" 
+      onHoldClass="maxButtonPressed"
+      :onHoldFunction="buyAllRebuyables
+    ">
+      Max All Rebuyables
+    </HoldableButton>
     <div class="l-dilation-upgrades-grid">
       <div
         v-for="(upgradeRow, row) in allRebuyables"
@@ -206,6 +238,26 @@ export default {
 </template>
 
 <style scoped>
+.maxButton {
+  font-size: 2rem;
+  color: var(--color-text);
+  background-color: var(--color-base);
+  width: calc(50% - 0.5rem);
+  padding: 1rem;
+  font-family: TypeWriter, serif;
+  border: 0.1rem solid var(--color-good-dark);
+  border-radius: var(--var-border-radius, 1rem);
+  margin-top: 2rem;
+  pointer-events: all;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.maxButtonPressed {
+  color: var(--color-text-inverted);
+  background-color: var(--color-good);
+}
+
 .max-accent {
   color: var(--color-dilation);
   font-size: 1.5rem;
