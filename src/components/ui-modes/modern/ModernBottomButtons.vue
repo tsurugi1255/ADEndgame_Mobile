@@ -135,7 +135,7 @@ export default {
 
 .c-bottom-button-container {
     position: absolute;
-    bottom: 10vh;
+    bottom: 15vh;
     right: 0;
     z-index: 5;
     width: 100vw;

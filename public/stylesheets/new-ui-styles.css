@@ -181,7 +181,7 @@ body.t-s12 {
 
 .game-container {
   width: 100%;
-  margin-bottom: 500rem;
+  margin-bottom: 250rem;
 }
 
 .t-s4 .game-container {
@@ -193,6 +193,7 @@ body.t-s12 {
   flex-direction: column;
   position: relative;
   justify-content: center;
+  margin-bottom: 250rem;
 }
 
 .tab-container > .l-antimatter-dim-tab {
